@@ -1,4 +1,5 @@
-
+const { sleep } = require('./sleep')
+const { tap } = require('./tap')
 
 function getRectCenter(rect) {
     let minX = rect.topLeft.x
@@ -11,6 +12,19 @@ function getRectCenter(rect) {
     return { x, y }
 }
 
+
+function findAndClickRect(r, flag, offsetX, offsetY) {
+    let ox = offsetX ? offsetX : 0
+    let oy = offsetY ? offsetY : 0
+    r.result.forEach((v, i)=>{
+        if (v.text.includes(flag)) {
+            let { x, y} = getRectCenter(v.rectangle)
+            tap(x + ox, y + oy)
+        }
+    })
+    sleep(2000)
+}
+
 module.exports = {
-    getRectCenter
+    findAndClickRect, getRectCenter
 }

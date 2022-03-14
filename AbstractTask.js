@@ -1,10 +1,11 @@
-const { getRectCenter } = require('./rect')
+const { findAndClickRect, getRectCenter } = require('./rect')
 
 class AbstractTask {
     constructor(gtCallback){
         this.generateTask = gtCallback
         this._isComplete = false
         this.getRectCenter = getRectCenter
+        this.findAndClickRect = findAndClickRect
     }
 
     async trigger(name) {

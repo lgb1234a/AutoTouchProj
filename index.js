@@ -30,6 +30,7 @@ function generateTask(isChenxing) {
     if (hour == 0) {
         // 进入第二天
         yt.resetRestTimes()
+        ct.resetRestTimes()
     }
 
     if (mintue >= 20 && mintue < 30 || mintue >= 50) {
@@ -47,17 +48,16 @@ function generateTask(isChenxing) {
         }
     }
 
-    if (!ct.isTimesRunout() && isChenxing) {
-        // return ct.trigger('辰星', isChenxing)
-    }
-
     if ((mintue == 59 || mintue < 20) || mintue > 28 && mintue < 50) {
         if (!yt.isComplete() && !yt.isTimesRunout()) {
             return yt.trigger('妖王')
         }
     }
-
-    return pt.trigger(appRestarted)
+    
+    if (!ct.isTimesRunout() && isChenxing) {
+        return ct.trigger('辰星', isChenxing)
+    }
+    return pt.trigger(appRestarted, ct.isTimesRunout())
 }
 
 //------------------------ ui --------------------------------//
@@ -73,6 +73,7 @@ const result = at.dialog({ controls })
 
 
 if (result == 1) {
+    at.toast('脚本开始！', 'bottom')
     appStateHandle()
 	sleep(5000)
 	

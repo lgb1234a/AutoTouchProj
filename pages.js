@@ -12,7 +12,8 @@ const pageType = {
     lianjieshibai: 10,
     denglushibai: 11,
     juqing: 12,
-    dinghaodenglu: 13
+    dinghaodenglu: 13,
+    huodong: 14
 }
 
 const pages = [
@@ -61,7 +62,7 @@ const pages = [
 	},
 	{
 		// '地煞': 
-		'page': '归属者',
+		'page': '积分排行',
 		'type': pageType.disha
 	},
 	{
@@ -71,13 +72,18 @@ const pages = [
 	},
     {
         // 妖王
-        'page': '镇妖玉',
+        'page': '猎兽兵团',
 		'type': pageType.yaowang
     },
     {
         // 剧情挑战
         'page': '挑战剧情',
 		'type': pageType.juqing
+    },
+    {
+        // 活动
+        'page': '跳过动画',
+        'type': pageType.huodong
     }
 	
 ]
@@ -86,8 +92,7 @@ function getPage(r)
 {
 	let text = r.text
 	for (let p of pages) {
-		let i = text.indexOf(p.page)
-		if (i != -1 ) {
+		if (text.includes(p.page)) {
 			return p.type
 		}
 	}

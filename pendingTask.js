@@ -11,29 +11,24 @@ class pendingTask extends AbstractTask {
         this.count = 0
     }
 
-    async trigger(appRestarted) {
+    async trigger(appRestarted, chenxingTimeRanout) {
         await super.trigger()
-        if (appRestarted) {
-            // 去辰星页面方便识别辰星通知
+        if (appRestarted || this.count == 10) {
+            // app闲置重启后或者闲置10s后，去辰星页面方便识别辰星通知
             await navigateTo(__PageType__)
         }
 
         let now = new Date()
         let hour = now.getHours()
-        if (hour < 2 || hour > 7) {
-            // 辰星监控
-            const {text, result} = await getPageText({ x: 0, y: 171, width: 750, height: 38 })
-            if (text) {
-                if (text.includes('前往')) {
-                    console.log(text)
-                }
-                
-                if (text.includes('猪辰星')) {
-                    return this.generateTask('zhu')
-                }
-
-                if (text.includes('狗辰星')) {
-                    return this.generateTask('gou')
+        if (!chenxingTimeRanout) {
+            if (hour < 2 || hour > 7) {
+                // 辰星监控
+                const {text, result} = await getPageText({ x: 0, y: 171, width: 750, height: 38 })
+                if (text && text.includes('辰星')) {
+                    if (text.includes('猪') || text.includes('狗') ) {
+                        console.log(text)
+                        return this.generateTask(text)
+                    }
                 }
             }
         }

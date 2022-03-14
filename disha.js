@@ -17,48 +17,43 @@ class dishaTask extends AbstractTask {
         await super.trigger(name)
         const { text, result } = await navigateTo(__PageType__)
         if (!text) {
-            console.log(1)
             return this.generateTask()
         }else if(getPage({ text, result }) != __PageType__){
-            console.log(2)
             return this.generateTask()
         }
         
         // 在地煞页等到30分
         let now = new Date()
+        let hour = now.getHours()
         let mintue = now.getMinutes()
         while(mintue == 29) {
             sleep(1000)
             now = new Date()
             mintue = now.getMinutes()
         }
-
-        console.log(3)
+        sleep(1000)
         // 挑战
-        tap(620, 820)
+        if (hour == 0 || hour == 2 || hour == 4 || hour == 6) {
+            tap(620, 360)
+        }else {
+            tap(620, 820)
+        }
         sleep(1000)
         
         let _r = await getPageText({ x: 0, y: 200, width: 750, height: 900 })
         if (getPage(_r) != pageType.guaji) {
             if (_r.text.includes('挑战')) {
                 // 点击挑战
-                var _find
-                _r.result.forEach((v, i)=>{
-                    if (v.text == '挑战') {
-                        _find = v
-                    }
-                })
-                console.log(_find)
-                if (_find) {
-                    const {x, y} = this.getRectCenter(_find.rectangle)
-                    tap(x, y)
-                    console.log(x + '  ' + y)
-                }
+                this.findAndClickRect(_r, '挑战')
             }
+        }else if(_r.text.includes('取消'))
+        {
+            this.findAndClickRect(_r, '取消')
+            return this.generateTask()
         }
 
         this.setIsComplete(true)
-        sleep(40000)
+        sleep(60000)
         this.toast('地煞完成')
         return this.generateTask()
     }

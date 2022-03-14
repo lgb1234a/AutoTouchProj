@@ -24,6 +24,7 @@ class yaowangTask extends AbstractTask {
         let gs = []
         result.forEach((v, i)=>{
             if (v.text.includes('0级')) {
+                console.log(v.text)
                 let grade = v.text.substring(0, v.text.length - 1)
                 grade = parseInt(grade)
                 gs.push(grade)
@@ -44,8 +45,14 @@ class yaowangTask extends AbstractTask {
 
     // 滑动到目标妖王
     async swipeToDest(g) {
-        const { text, result } = await getPageText({ x: 0, y: 200, width: 750, height: 640 })
-        const { min, max } = this.getGradeRange(result)
+        let _r = await getPageText({ x: 0, y: 200, width: 750, height: 640 })
+        if (getPage(_r) != __PageType__) {
+            await navigateTo(__PageType__)
+            _r = await getPageText({ x: 0, y: 200, width: 750, height: 640 })
+        }
+        // console.log(_r.result)
+        const { min, max } = this.getGradeRange(_r.result)
+        // alert(min + ' ' + max)
         const r = await new Promise((resolve, reject)=> {
             if ( g < min ) {
                 swipeHorizontally()
@@ -54,7 +61,7 @@ class yaowangTask extends AbstractTask {
                 swipeHorizontally(true)
                 resolve(false)
             }
-            resolve([ text, result ])
+            resolve([ _r.text, _r.result ])
         })
         return r
     }
@@ -103,25 +110,15 @@ class yaowangTask extends AbstractTask {
                 if (gr <= 130) {
                     sleep(3000)
                 }else if (gr < 200) {
-                    sleep(10000)
+                    sleep(8000)
                 }else {
                     sleep(25000)
                 }
                 
-                // _r = await getPageText()
-                // if (_r) {
-                //     const crtPageType = getPage(_r)
-
-                //     if (crtPageType == pageType.guaji) {
-                //         sleep(8000)
-                //     }else if (crtPageType != __PageType__){
-                //         // 跳转到其他页面去了
-                //         await navigateTo(__PageType__)
-                //     }
-                // }
                 // 点掉奖励弹窗
                 tap(375, 90)
             }
+            
             this.restCountToday--
             this.grades.splice(index,1)
         }
@@ -152,8 +149,9 @@ class yaowangTask extends AbstractTask {
         }else if(getPage({ text, result }) != __PageType__){
             return this.generateTask()
         }
+        console.log('3')
         result.forEach((v, i)=>{
-            if (v.text.includes('剩余获取归属奖励次数'))
+            if (v.text.includes('剩余获取归属奖励次数：'))
             {
                 let _ts = v.text.split('：')
                 let rct = _ts[1].split('/')[0]
@@ -178,6 +176,8 @@ class yaowangTask extends AbstractTask {
                 // 挑战50 ~ 130
                 this.grades = [50, 60, 70, 80, 90, 100, 110, 120, 130]
             }
+        }else {
+            return this.generateTask()
         }
 
         var i = this.grades.length
@@ -190,7 +190,7 @@ class yaowangTask extends AbstractTask {
             if (this.grades.length == 0) {
                 this.toast('妖王结束')
                 this.setIsComplete(true)
-                break
+                return this.generateTask()
             }
             i--
         }
