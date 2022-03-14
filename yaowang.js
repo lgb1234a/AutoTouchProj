@@ -24,7 +24,6 @@ class yaowangTask extends AbstractTask {
         let gs = []
         result.forEach((v, i)=>{
             if (v.text.includes('0级')) {
-                console.log(v.text)
                 let grade = v.text.substring(0, v.text.length - 1)
                 grade = parseInt(grade)
                 gs.push(grade)
@@ -50,9 +49,7 @@ class yaowangTask extends AbstractTask {
             await navigateTo(__PageType__)
             _r = await getPageText({ x: 0, y: 200, width: 750, height: 640 })
         }
-        // console.log(_r.result)
         const { min, max } = this.getGradeRange(_r.result)
-        // alert(min + ' ' + max)
         const r = await new Promise((resolve, reject)=> {
             if ( g < min ) {
                 swipeHorizontally()
@@ -149,7 +146,6 @@ class yaowangTask extends AbstractTask {
         }else if(getPage({ text, result }) != __PageType__){
             return this.generateTask()
         }
-        console.log('3')
         result.forEach((v, i)=>{
             if (v.text.includes('剩余获取归属奖励次数：'))
             {
@@ -169,7 +165,7 @@ class yaowangTask extends AbstractTask {
             if (this.restTickets >= 100) {
                 // 挑战 200 ~ 300
                 this.grades = [190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300]
-            }else if(this.restTickets >= 7) {
+            }else if(this.restTickets >= 20) {
                 // 挑战130~190
                 this.grades = [130, 140, 150, 160, 170, 180, 190]
             }else {
