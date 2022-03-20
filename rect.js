@@ -16,13 +16,17 @@ function getRectCenter(rect) {
 function findAndClickRect(r, flag, offsetX, offsetY) {
     let ox = offsetX ? offsetX : 0
     let oy = offsetY ? offsetY : 0
+    let _x, _y
     r.result.forEach((v, i)=>{
         if (v.text.includes(flag)) {
             let { x, y} = getRectCenter(v.rectangle)
             tap(x + ox, y + oy)
+            _x = x
+            _y = y
         }
     })
-    sleep(2000)
+    sleep(1000)
+    return { x: _x, y: _y}
 }
 
 module.exports = {

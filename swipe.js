@@ -16,7 +16,28 @@ function swipeHorizontally(showRight) {
 	}
 	at.usleep(2000000)
 }
-// swipeHorizontally(true)
+
+function swipeVertically(showUp) {
+	if (showUp) {
+		at.touchDown(1, 170, 540)
+		for (let y = 540; y <= 600; y += 2) {
+			at.usleep(10000)
+			at.touchMove(1, 170, y)
+		}
+		at.touchUp(1, 170, 600)
+	}else {
+		at.touchDown(1, 170, 600)
+		for (let y = 600; y >= 540; y -= 5) {
+			at.usleep(10000)
+			at.touchMove(1, 170, y)
+		}
+		at.touchUp(1, 170, 540)
+	}
+	at.usleep(2000000)
+}
+
+
+// swipeVertically(true)
 module.exports = {
-	swipeHorizontally
+	swipeHorizontally, swipeVertically
 }

@@ -24,11 +24,19 @@ async function navigateTo(destPageType) {
                     break;
                 case pageType.zhucheng:
                     // console.log('主城')
-                    tap(600, 1000)
+                    if (destPageType == pageType.wanfa) {
+                        tap(50, 1250)
+                    } else {
+                        tap(600, 1000)
+                    }
                     break;
                 case pageType.guaji:
                     // console.log('挂机')
-                    tap(180, 1280)
+                    if (destPageType == pageType.wanfa) {
+                        tap(40, 540)
+                    } else {
+                        tap(180, 1280)
+                    }
                     break;
                 case pageType.juqing:
                     // console.log('剧情挑战')
@@ -43,6 +51,8 @@ async function navigateTo(destPageType) {
                     }else if (destPageType == pageType.yaowang) {
                         findAndClickRect(r, '封印妖王')
                         r = await getPageText()
+                    } else {
+                        tap(180, 1280)
                     }
                     break
                 case pageType.disha:
@@ -88,8 +98,10 @@ async function navigateTo(destPageType) {
             }
         }
         loopsCount ++
-        if (loopsCount > 20) {
+        if (loopsCount > 10) {
             loopsCount = 0
+            // 截屏
+            at.screenshot(`ScreenShot/${new Date().toISOString()}.png`)
             console.log('找不到目标页面，重启')
             at.appKill("com.netease.mhxywyb")
             sleep(5000)

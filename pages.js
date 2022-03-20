@@ -13,7 +13,8 @@ const pageType = {
     denglushibai: 11,
     juqing: 12,
     dinghaodenglu: 13,
-    huodong: 14
+	huodong: 14,
+	wanfa: 15
 }
 
 const pages = [
@@ -84,8 +85,11 @@ const pages = [
         // 活动
         'page': '跳过动画',
         'type': pageType.huodong
-    }
-	
+	},
+	{
+		'page': '玩法',
+		'type': pageType.wanfa
+	}
 ]
 
 function getPage(r)
