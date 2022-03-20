@@ -42,19 +42,23 @@ class richangTask extends AbstractTask {
         return this._zhuoguiComplete && this._zhongzuComplete && this._yunbiaoComplete && this._juqingComplete && this._fubenComplete && this._huashanComplete && this._yantadigongComplete && this._baihutangComplete && this._qinglongtangComplete && this._xuanwutangComplete && this._shouhushouComplete && this._qiangdaoComplete
     }
 
+    setIsComplete(v) {
+        this._zhuoguiComplete = v
+        this._zhongzuComplete = v
+        this._yunbiaoComplete = v
+        this._juqingComplete = v
+        this._fubenComplete = v
+        this._huashanComplete = v
+        this._yantadigongComplete = v
+        this._baihutangComplete = v
+        this._qinglongtangComplete = v
+        this._xuanwutangComplete = v
+        this._shouhushouComplete = v
+        this._qiangdaoComplete = v
+    }
+
     resetCompleteStatus() {
-        this._zhuoguiComplete = false
-        this._zhongzuComplete = false
-        this._yunbiaoComplete = false
-        this._juqingComplete = false
-        this._fubenComplete = false
-        this._huashanComplete = false
-        this._yantadigongComplete = false
-        this._baihutangComplete = false
-        this._qinglongtangComplete = false
-        this._xuanwutangComplete = false
-        this._shouhushouComplete = false
-        this._qiangdaoComplete = false
+        this.setIsComplete(false)
     }
 
     async taskStart(taskName) {

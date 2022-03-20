@@ -125,6 +125,9 @@ class yaowangTask extends AbstractTask {
         })
     }
 
+    setTimesRanout() {
+        this.restCountToday = 0
+    }
 
     isTimesRunout()
     {

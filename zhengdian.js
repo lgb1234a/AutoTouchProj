@@ -5,12 +5,22 @@ const { AbstractTask } = require('./AbstractTask')
 const { navigateTo } = require('./navigator')
 const { tap } = require('./tap')
 const { swipeHorizontally, swipeVertically } = require('./swipe')
+const { range } = require('./range')
 
 const __PageType__ = pageType.wanfa
+const __YINGXIONGDAHUI__ = '英雄大会'
+const __CAIHONG__ = '彩虹争霸'
+const __BANGZHAN__ = '跨服帮战'
+const __GONGFANGZHAN = '梦幻攻防战'
+const __FEIZEI__ = '皇宫飞贼'
+const __YANBING__ = '校场演兵'
+const __XIAOGUI__ = '小龟快跑'
 class zhengdianTask extends AbstractTask {
     constructor(gtCallback) {
         super(gtCallback)
         // 11点开始飞贼，晚上19点开始演兵, 11点55  19点55小龟
+        this._yanbingComplete = false
+        this._feizeiComplete = false
     }
 
     hasTaskValid() {
@@ -20,46 +30,49 @@ class zhengdianTask extends AbstractTask {
         let mintue = now.getMinutes()
 
         if ((day == 1 || day == 5) && hour == 20 && mintue < 45) {
-            return 'yingxiongdahui'
+            return __YINGXIONGDAHUI__
         }
 
         if ((day == 2 || day == 4) && hour == 20 && mintue < 30) {
-            return 'caihong'
+            return __CAIHONG__
         }
 
         if ((day == 2 || day == 4) && hour == 21 && mintue < 30) {
-            return 'bangzhan'
+            return __BANGZHAN__
         }
 
         if ((day == 3 || day == 6) && hour == 20 && mintue < 30) {
-            return 'gongfangzhan'
+            return __GONGFANGZHAN
         }
 
 
-        if (hour >= 11 && hour < 13) {
-            return 'feizei'
+        if (hour >= 11 && hour < 13 && !this._feizeiComplete) {
+            return __FEIZEI__
         }
 
-        if (hour == 19) {
-            return 'yanbing'
+        if (hour == 19 && !this._yanbingComplete) {
+            return __YANBING__
         }
 
         if (hour == 11 && mintue >= 55 || hour == 19 && mintue >= 55) {
-            return 'xiaogui'
+            return __XIAOGUI__
         }
     }
 
     async taskStart(taskName) {
+        this.toast('找' + taskName)
         const { text, result } = await navigateTo(__PageType__)
         if (!text) {
             return false
         }else if(getPage({ text, result }) != __PageType__){
             return false
         }
-
+        this.findAndClickRect({ text, result }, '限时')
+        
         // 45,195,706,929
         let _r = await getPageText({ x: 0, y: 195, width: 750, height: 735 })
-        for (let _ of range(1, 5)) {
+        
+        for (let i of range(1, 8)) {
             if (_r.text.includes(taskName)) {
                 let center = this.findAndClickRect(_r, taskName)
                 if (center.y > 820) {
@@ -68,9 +81,12 @@ class zhengdianTask extends AbstractTask {
                 break;
             }
             swipeVertically()
+            if (i % 3 == 0) {
+                sleep(1000)
+                swipeVertically(true)
+            }
             _r = await getPageText({ x: 0, y: 195, width: 750, height: 735 })
         }
-
         if (!_r.text.includes(taskName)) {
             return false
         }
@@ -91,8 +107,7 @@ class zhengdianTask extends AbstractTask {
         if (_r.text.includes('前往')) {
             this.findAndClickRect(_r, '前往')
             return true
-        } else if (_r.text.includes('完成')) {
-            
+        } else if (_r.text.includes('已结束')) {
             return false
         }
 
@@ -103,21 +118,16 @@ class zhengdianTask extends AbstractTask {
     async trigger(name) {
         await super.trigger(name)
 
-        const { text, result } = await navigateTo(__PageType__)
-        if (!text) {
-            return this.generateTask()
-        }else if(getPage({ text, result }) != __PageType__){
-            return this.generateTask()
+        if (this.hasTaskValid() == __FEIZEI__) {
+            let r = await this.taskStart(__FEIZEI__)
+            if (r) sleep(600 * 1000)
+            this._feizeiComplete = true
         }
 
-        if (this.hasTaskValid() == 'feizei') {
-            this.findAndClickRect({ text, result }, '限时')
-            await this.taskStart('皇宫飞贼')
-        }
-
-        if (this.hasTaskValid() == 'yanbing') {
-            this.findAndClickRect({ text, result }, '限时')
-            await this.taskStart('校场演兵')
+        if (this.hasTaskValid() == __YANBING__) {
+            let r = await this.taskStart(__YANBING__)
+            if (r) sleep(600 * 1000)
+            this._yanbingComplete = true
         }
 
 

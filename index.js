@@ -59,6 +59,10 @@ function generateTask(isChenxing) {
         }
     }
 
+    if (zt.hasTaskValid() && !zt.isComplete()) {
+        return zt.trigger('整点')
+    }
+
     if (!ct.isTimesRunout() && isChenxing) {
         return ct.trigger('辰星', isChenxing)
     }
@@ -69,10 +73,6 @@ function generateTask(isChenxing) {
         }
     }
 
-    if (zt.hasTaskValid() && !zt.isComplete()) {
-        // return zt.trigger('整点')
-    }
-
     if (!rt.isComplete()) {
         return rt.trigger('日常')
     }
@@ -80,24 +80,10 @@ function generateTask(isChenxing) {
     return pt.trigger(appRestarted, ct.isTimesRunout())
 }
 
-//------------------------ ui --------------------------------//
-const label = { type: CONTROLLER_TYPE.LABEL, text: "mhxyh5辅助" }
 
-const developerSwitch = { type: CONTROLLER_TYPE.SWITCH, title: "A Developer:", key: "ADeveloper", value: 1 }
-const btn1 = { type: CONTROLLER_TYPE.BUTTON, title: "开始", color: 0x71C69E, flag: 1, collectInputs: true }
-const btn2 = { type: CONTROLLER_TYPE.BUTTON, title: "取消", color: 0xFF5733, flag: 2, collectInputs: true }
-
-const controls = [label, developerSwitch, btn1, btn2]
-
-//const result = at.dialog({ controls })
-
-
-//if (result == 1) {
-
+// if (yaowangSwitch.value == 0) yt.setTimesRanout()
+// if (richangSwitch.value == 0) rt.setIsComplete(true)
 at.toast('脚本开始！', 'bottom')
 appStateHandle()
 sleep(5000)
-
 generateTask()
-
-//}
