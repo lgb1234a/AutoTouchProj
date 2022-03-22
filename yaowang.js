@@ -44,10 +44,10 @@ class yaowangTask extends AbstractTask {
 
     // 滑动到目标妖王
     async swipeToDest(g) {
-        let _r = await getPageText({ x: 0, y: 200, width: 750, height: 640 })
-        if (getPage(_r) != __PageType__) {
+        let _r = await getPageText({ x: 0, y: 60, width: 750, height: 780 })
+        if (!_r.text.includes('封印妖王')) {
             await navigateTo(__PageType__)
-            _r = await getPageText({ x: 0, y: 200, width: 750, height: 640 })
+            _r = await getPageText({ x: 0, y: 60, width: 750, height: 780 })
         }
         const { min, max } = this.getGradeRange(_r.result)
         const r = await new Promise((resolve, reject)=> {
@@ -88,7 +88,7 @@ class yaowangTask extends AbstractTask {
         let index = this.grades.indexOf(gr)
         var g = gr + '级'
         if (text.includes(g)) {
-            console.log('start: ' + g)
+            this.toast('start: ' + g)
             var _find
             result.forEach((v, i)=>{
                 if (v.text == g) {
@@ -117,7 +117,7 @@ class yaowangTask extends AbstractTask {
             }
             
             this.restCountToday--
-            this.grades.splice(index,1)
+            this.grades.splice(index, 1)
         }
 
         await new Promise((resolve, reject)=> {
@@ -165,12 +165,13 @@ class yaowangTask extends AbstractTask {
 
         if (this.restCountToday > 0) {
             
-            if (this.restTickets >= 100) {
-                // 挑战 200 ~ 300
-                this.grades = [190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300]
-            }else if(this.restTickets >= 20) {
+            // if (this.restTickets >= 100) {
+            //     // 挑战 200 ~ 300
+            //     this.grades = [190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300]
+            // } else
+            if (this.restTickets >= 20) {
                 // 挑战130~190
-                this.grades = [130, 140, 150, 160, 170, 180, 190]
+                this.grades = [130, 140, 150, 160, 170, 180, 190, 200, 210]
             }else {
                 // 挑战50 ~ 130
                 this.grades = [50, 60, 70, 80, 90, 100, 110, 120, 130]
@@ -192,6 +193,12 @@ class yaowangTask extends AbstractTask {
                 return this.generateTask()
             }
             i--
+
+            let now = new Date()
+            let mintue = now.getMinutes()
+            if (mintue >= 20 && mintue < 30 || mintue >= 50) {
+                break
+            }
         }
         return this.generateTask()
     }

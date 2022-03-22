@@ -73,7 +73,7 @@ const pages = [
 	},
     {
         // 妖王
-        'page': '猎兽兵团',
+        'page': '开启镇妖玉设置',
 		'type': pageType.yaowang
     },
     {

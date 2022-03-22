@@ -42,18 +42,16 @@ class dishaTask extends AbstractTask {
         
         let _r = await getPageText({ x: 0, y: 200, width: 750, height: 900 })
         if (getPage(_r) != pageType.guaji) {
-            if (_r.text.includes('挑战')) {
+            if (_r.text.includes('确认')) {
+                // 抢地煞
+                this.findAndClickRect(_r, '确认')
+            } else if (_r.text.includes('挑战')) {
                 // 点击挑战
                 this.findAndClickRect(_r, '挑战')
             }
-        }else if(_r.text.includes('取消'))
-        {
-            this.findAndClickRect(_r, '取消')
-            return this.generateTask()
         }
-
         this.setIsComplete(true)
-        sleep(60000)
+        sleep(100000)
         this.toast('地煞完成')
         return this.generateTask()
     }

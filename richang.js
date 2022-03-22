@@ -36,10 +36,11 @@ class richangTask extends AbstractTask {
         this._xuanwutangComplete = false
         this._shouhushouComplete = false
         this._qiangdaoComplete = false
+        this._shengsijieComplete = false
     }
 
     isComplete() {
-        return this._zhuoguiComplete && this._zhongzuComplete && this._yunbiaoComplete && this._juqingComplete && this._fubenComplete && this._huashanComplete && this._yantadigongComplete && this._baihutangComplete && this._qinglongtangComplete && this._xuanwutangComplete && this._shouhushouComplete && this._qiangdaoComplete
+        return this._zhuoguiComplete && this._zhongzuComplete && this._yunbiaoComplete && this._juqingComplete && this._fubenComplete && this._huashanComplete && this._yantadigongComplete && this._baihutangComplete && this._qinglongtangComplete && this._xuanwutangComplete && this._shouhushouComplete && this._qiangdaoComplete && this._shengsijieComplete
     }
 
     setIsComplete(v) {
@@ -55,6 +56,7 @@ class richangTask extends AbstractTask {
         this._xuanwutangComplete = v
         this._shouhushouComplete = v
         this._qiangdaoComplete = v
+        this._shengsijieComplete = v
     }
 
     resetCompleteStatus() {
@@ -286,7 +288,10 @@ class richangTask extends AbstractTask {
 
         tap(620, 1150)
         tap(590, 750)
-
+        let _r = await getPageText()
+        if (_r.text.includes('近期不再提醒')) {
+            this.findAndClickRect(_r, '取消')
+        }
     }
 
 
@@ -348,8 +353,23 @@ class richangTask extends AbstractTask {
         this._qiangdaoComplete = true
     }
 
+    // 生死劫
+    async shengsijie() {
+        await navigateTo(pageType.zhucheng)
+        tap(600, 520)
+        tap(615, 1140)
+        tap(330, 1040)
+        tap(50, 1250)
+        this._shengsijieComplete = true
+    }
+
     async trigger(name) {
         await super.trigger(name)
+
+        if (!this._shengsijieComplete) {
+            await this.shengsijie()
+            tap(50, 1250)
+        }
         
         if (!this._baihutangComplete) {
             await this.baihutang()

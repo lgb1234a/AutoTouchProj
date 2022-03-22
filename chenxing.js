@@ -6,6 +6,7 @@ const { AbstractTask } = require('./AbstractTask')
 const { findAndClickRect, getRectCenter } = require('./rect')
 const { tap } = require('./tap')
 const { navigateTo } = require('./navigator')
+const { range } = require('./range')
 
 const __PageType__ = pageType.chenxing
 class chenxingTask extends AbstractTask {
@@ -54,6 +55,8 @@ class chenxingTask extends AbstractTask {
         }else if (chenxingNotify.includes('狗'))
         {
             targetGrade = '290级'
+        } else {
+            targetGrade = '230级'
         }
         if (!targetGrade) {
             return this.generateTask()
@@ -66,18 +69,26 @@ class chenxingTask extends AbstractTask {
         _r = await getPageText()
         if (_r.text && _r.text.includes('挑战辰星'))
         {
+            findAndClickRect(_r, '组队')
+            let r_1 = await getPageText()
+            findAndClickRect(r_1, '创建队伍')
+            tap(675, 910)
             findAndClickRect(_r, '挑战辰星')
-            let i = 0
-            while(i++ < 150) {
+            for (let _ of range(1, 150)) {
                 _r = await getPageText()
                 if (_r.text && _r.text.includes('跳过战斗')) {
                     findAndClickRect(_r, '跳过战斗')
                 }else if(_r.text && _r.text.includes('退出')) {
                     findAndClickRect(_r, '退出')
+                    tap(540, 740)
                     this.toast(targetGrade + '完成')
                     return this.generateTask()
                 }else if(_r.text && _r.text.includes('挑战归属者'))
                 {
+                    findAndClickRect(_r, '组队')
+                    _r = await getPageText()
+                    findAndClickRect(_r, '退出队伍')
+                    tap(670, 1050)
                     tap(700, 880)
                     tap(540, 740)
                 }

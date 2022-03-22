@@ -13,6 +13,8 @@ function appStateHandle() {
     const state = at.appState("com.netease.mhxywyb")
     if (state != 'ACTIVATED') {
         at.keyDown(KEY_TYPE.HOME_BUTTON)
+        at.keyUp(KEY_TYPE.HOME_BUTTON)
+        sleep(2000)
 	    at.appRun("com.netease.mhxywyb")
         return true
     }
@@ -36,7 +38,7 @@ function generateTask(isChenxing) {
         // 进入第二天
         yt.resetRestTimes()
         ct.resetRestTimes()
-		if (mintue == 0)
+		if (mintue < 5)
        		rt.resetCompleteStatus()
     }
 

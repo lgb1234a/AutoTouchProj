@@ -120,14 +120,18 @@ class zhengdianTask extends AbstractTask {
 
         if (this.hasTaskValid() == __FEIZEI__) {
             let r = await this.taskStart(__FEIZEI__)
-            if (r) sleep(600 * 1000)
-            this._feizeiComplete = true
+            if (r) {
+                sleep(1000 * 1000)
+                this._feizeiComplete = true
+            }
         }
 
         if (this.hasTaskValid() == __YANBING__) {
             let r = await this.taskStart(__YANBING__)
-            if (r) sleep(600 * 1000)
-            this._yanbingComplete = true
+            if (r) {
+                sleep(1000 * 1000)
+                this._yanbingComplete = true
+            }
         }
 
 
