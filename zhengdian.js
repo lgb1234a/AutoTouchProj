@@ -21,6 +21,7 @@ class zhengdianTask extends AbstractTask {
         // 11点开始飞贼，晚上19点开始演兵, 11点55  19点55小龟
         this._yanbingComplete = false
         this._feizeiComplete = false
+        this._bangzhanComplete = false
     }
 
     hasTaskValid() {
@@ -37,8 +38,9 @@ class zhengdianTask extends AbstractTask {
             return __CAIHONG__
         }
 
-        if ((day == 2 || day == 4) && hour == 21 && mintue < 30) {
-            return __BANGZHAN__
+        if ((day == 2 || day == 4) && (hour == 21 && mintue < 30 || hour == 20 && mintue > 50)) {
+            if (!this._bangzhanComplete)
+                return __BANGZHAN__
         }
 
         if ((day == 3 || day == 6) && hour == 20 && mintue < 30) {
@@ -131,6 +133,22 @@ class zhengdianTask extends AbstractTask {
             if (r) {
                 sleep(1000 * 1000)
                 this._yanbingComplete = true
+            }
+        }
+
+        if (this.hasTaskValid() == __BANGZHAN__) {
+            let r = await this.taskStart(__BANGZHAN__)
+            if (r) {
+                let now = new Date()
+                let hour = now.getHours()
+                let mintue = now.getMinutes()
+                while (hour <= 21 && mintue < 30) {
+                    now = new Date()
+                    hour = now.getHours()
+                    mintue = now.getMinutes()
+                    sleep(60000)
+                }
+                this._bangzhanComplete = true
             }
         }
 
