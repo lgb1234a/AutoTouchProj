@@ -102,14 +102,21 @@ class chenxingTask extends AbstractTask {
         }else if (chenxingNotify.includes('狗'))
         {
             targetGrade = '290级'
-        }else if (chenxingNotify.includes('鸡'))
+        }
+        else if (chenxingNotify.includes('鸡'))
         {
             targetGrade = '280级'
             await this.swipeToDest(280)
-        }else if (chenxingNotify.includes('猴'))
+        }
+        else if (chenxingNotify.includes('猴'))
         {
             targetGrade = '265级'
             await this.swipeToDest(265)
+        }
+        else if (chenxingNotify.includes('羊'))
+        {
+            targetGrade = '250级'
+            await this.swipeToDest(250)
         }
         else {
             targetGrade = '230级'
