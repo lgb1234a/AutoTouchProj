@@ -7,6 +7,7 @@ const { findAndClickRect, getRectCenter } = require('./rect')
 const { tap } = require('./tap')
 const { navigateTo } = require('./navigator')
 const { range } = require('./range')
+const { swipeHorizontally } = require('./swipe')
 
 const __PageType__ = pageType.chenxing
 class chenxingTask extends AbstractTask {
@@ -24,6 +25,52 @@ class chenxingTask extends AbstractTask {
     resetRestTimes()
     {
         this.restCountToday = 5
+    }
+
+    // 获取屏幕范围内的辰星等级
+    getGradeRange(result) {
+        var min = 300
+        var max = 0
+        let gs = []
+        result.forEach((v, i)=>{
+            if (v.text.includes('0级')) {
+                let grade = v.text.substring(0, v.text.length - 1)
+                grade = parseInt(grade)
+                gs.push(grade)
+                if (max < grade) {
+                    max = grade
+                }
+            }
+        })
+
+        gs.forEach((v) => {
+            // 避免文字被遮挡识别一半
+            if (min > v && max - v < 100) {
+                min = v
+            }
+        })
+        return { min, max }
+    }
+
+    // 滑动到目标辰星
+    async swipeToDest(g) {
+        let _r = await getPageText({ x: 0, y: 60, width: 750, height: 780 })
+        if (!_r.text.includes('天降辰星')) {
+            await navigateTo(__PageType__)
+            _r = await getPageText({ x: 0, y: 60, width: 750, height: 780 })
+        }
+        const { min, max } = this.getGradeRange(_r.result)
+        const r = await new Promise((resolve, reject)=> {
+            if ( g < min ) {
+                swipeHorizontally()
+                resolve(false)
+            }else if (g > max) {
+                swipeHorizontally(true)
+                resolve(false)
+            }
+            resolve([ _r.text, _r.result ])
+        })
+        return r
     }
     
     async trigger(name, chenxingNotify) {
@@ -55,15 +102,27 @@ class chenxingTask extends AbstractTask {
         }else if (chenxingNotify.includes('狗'))
         {
             targetGrade = '290级'
-        } else {
+        }else if (chenxingNotify.includes('鸡'))
+        {
+            targetGrade = '280级'
+            await this.swipeToDest(280)
+        }else if (chenxingNotify.includes('猴'))
+        {
+            targetGrade = '265级'
+            await this.swipeToDest(265)
+        }
+        else {
             targetGrade = '230级'
+            await this.swipeToDest(230)
         }
         if (!targetGrade) {
             return this.generateTask()
         }
         // 13,197,724,752
         _r = await getPageText({ x: 0, y: 200, width: 750, height: 552 })
-        this.findAndClickRect(_r, targetGrade, 0, -80)
+        if (_r.text.includes(targetGrade))
+            this.findAndClickRect(_r, targetGrade, 0, -80)
+        
         tap(620, 1020)
         
         _r = await getPageText()

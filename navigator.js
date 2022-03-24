@@ -24,7 +24,7 @@ async function navigateTo(destPageType) {
                     break;
                 case pageType.zhucheng:
                     // console.log('主城')
-                    if (destPageType == pageType.wanfa) {
+                    if (destPageType == pageType.wanfa || destPageType == pageType.guaji) {
                         tap(50, 1250)
                     } else {
                         tap(600, 1000)
@@ -32,7 +32,7 @@ async function navigateTo(destPageType) {
                     break;
                 case pageType.guaji:
                     // console.log('挂机')
-                    if (destPageType == pageType.wanfa) {
+                    if (destPageType == pageType.wanfa || destPageType == pageType.guaji) {
                         tap(40, 540)
                     } else {
                         tap(180, 1280)

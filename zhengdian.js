@@ -22,6 +22,7 @@ class zhengdianTask extends AbstractTask {
         this._yanbingComplete = false
         this._feizeiComplete = false
         this._bangzhanComplete = false
+        this._caihongComplete = false
     }
 
     hasTaskValid() {
@@ -35,7 +36,8 @@ class zhengdianTask extends AbstractTask {
         }
 
         if ((day == 2 || day == 4) && hour == 20 && mintue < 30) {
-            return __CAIHONG__
+            if (!this._caihongComplete)
+                return __CAIHONG__
         }
 
         if ((day == 2 || day == 4) && (hour == 21 && mintue < 30 || hour == 20 && mintue > 50)) {
@@ -137,21 +139,47 @@ class zhengdianTask extends AbstractTask {
         }
 
         if (this.hasTaskValid() == __BANGZHAN__) {
-            let r = await this.taskStart(__BANGZHAN__)
+            this.toast(__BANGZHAN__)
+            let r = await navigateTo(pageType.guaji)
+            if (!r.text.includes(__BANGZHAN__))
+            {
+                return this.generateTask()
+            }
+            tap(55, 222)
+            let now = new Date()
+            let hour = now.getHours()
+            let mintue = now.getMinutes()
+            while (hour <= 21 && mintue < 30) {
+                now = new Date()
+                hour = now.getHours()
+                mintue = now.getMinutes()
+                sleep(60000)
+            }
+            this._bangzhanComplete = true
+        }
+
+        if (this.hasTaskValid() == __CAIHONG__) {
+            let r = await this.taskStart(__CAIHONG__)
             if (r) {
                 let now = new Date()
                 let hour = now.getHours()
                 let mintue = now.getMinutes()
-                while (hour <= 21 && mintue < 30) {
+                while (hour <= 20 && mintue < 30) {
                     now = new Date()
                     hour = now.getHours()
                     mintue = now.getMinutes()
-                    sleep(60000)
+
+                    tap(535, 450)
+                    sleep(12000)
+                    r = await getPageText()
+                    if (r.text.includes('是的'))
+                        this.findAndClickRect(r, '是的')
+
+                    // sleep(40000)
                 }
-                this._bangzhanComplete = true
+                this._caihongComplete = true
             }
         }
-
 
         return this.generateTask()
     }

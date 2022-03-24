@@ -33,11 +33,11 @@ class dishaTask extends AbstractTask {
         }
         sleep(1000)
         // 挑战
-        if (hour == 0 || hour == 2 || hour == 4 || hour == 6) {
-            tap(620, 360)
-        }else {
+        // if (hour == 0 || hour == 2 || hour == 4 || hour == 6) {
+        //     tap(620, 360)
+        // }else {
             tap(620, 820)
-        }
+        // }
         sleep(1000)
         
         let _r = await getPageText({ x: 0, y: 200, width: 750, height: 900 })
