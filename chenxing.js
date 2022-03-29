@@ -109,9 +109,11 @@ class chenxingTask extends AbstractTask {
         if (chenxingNotify.includes('猪'))
         {
             targetGrade = '300级'
+            await this.challengeChenxing(300)
         }else if (chenxingNotify.includes('狗'))
         {
             targetGrade = '290级'
+            await this.challengeChenxing(290)
         }
         else if (chenxingNotify.includes('鸡'))
         {

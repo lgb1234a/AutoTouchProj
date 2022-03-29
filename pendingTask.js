@@ -27,7 +27,7 @@ class pendingTask extends AbstractTask {
         // 辰星监控
         const {text, result} = await getPageText({ x: 0, y: 171, width: 750, height: 38 })
         if (text && text.includes('辰星')) {
-            if (text.includes('鸡') || text.includes('猴') || text.includes('羊')) {
+            if (text.includes('鸡') || text.includes('猴') || text.includes('羊') || text.includes('猪') || text.includes('狗')) {
                 return this.generateTask(text)
             }
         }
