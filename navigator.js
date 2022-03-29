@@ -80,6 +80,7 @@ async function navigateTo(destPageType) {
                     // alert('短线重连')
                     break
                 case pageType.dinghaodenglu:
+                    sleep(600000)
                 case pageType.lianjieshibai:
                 case pageType.denglushibai:
                     // alert('登录认证失败')

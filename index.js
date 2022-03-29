@@ -75,7 +75,7 @@ function generateTask(isChenxing) {
         }
     }
 
-    if (!rt.isComplete()) {
+    if (!rt.isComplete() && hour < 9) {
         return rt.trigger('日常')
     }
 

@@ -111,8 +111,9 @@ class zhengdianTask extends AbstractTask {
         if (_r.text.includes('前往')) {
             this.findAndClickRect(_r, '前往')
             return true
-        } else if (_r.text.includes('已结束')) {
-            return false
+        } else if (_r.text.includes('完成')) {
+            this._feizeiComplete = true
+            return this.generateTask()
         }
 
         return false
