@@ -72,6 +72,16 @@ class chenxingTask extends AbstractTask {
         })
         return r
     }
+
+    async challengeChenxing(g) {
+        for (let _ of range(1, 20)) {
+            let _r = await this.swipeToDest(g)
+            if (_r) {
+                return true
+            }
+        }
+        return false
+    }
     
     async trigger(name, chenxingNotify) {
         await super.trigger(name)
@@ -106,21 +116,21 @@ class chenxingTask extends AbstractTask {
         else if (chenxingNotify.includes('鸡'))
         {
             targetGrade = '280级'
-            await this.swipeToDest(280)
+            await this.challengeChenxing(280)
         }
         else if (chenxingNotify.includes('猴'))
         {
             targetGrade = '265级'
-            await this.swipeToDest(265)
+            await this.challengeChenxing(265)
         }
         else if (chenxingNotify.includes('羊'))
         {
             targetGrade = '250级'
-            await this.swipeToDest(250)
+            await this.challengeChenxing(250)
         }
         else {
             targetGrade = '230级'
-            await this.swipeToDest(230)
+            await this.challengeChenxing(230)
         }
         if (!targetGrade) {
             return this.generateTask()
