@@ -20,6 +20,7 @@ const __QINGLONGTANG__ = '青龙堂任务'
 const __XUANWUTANG__ = '玄武堂任务'
 const __SHOUHUSHOU__ = '帮派守护兽'
 const __QIANGDAO__ = '帮派除盗'
+const __SHENQI__ = '神器任务'
 
 class richangTask extends AbstractTask {
     constructor(gtCallback) {
@@ -37,10 +38,11 @@ class richangTask extends AbstractTask {
         this._shouhushouComplete = false
         this._qiangdaoComplete = false
         this._shengsijieComplete = false
+        this._shenqiComplete = false
     }
 
     isComplete() {
-        return this._zhuoguiComplete && this._zhongzuComplete && this._yunbiaoComplete && this._juqingComplete && this._fubenComplete && this._huashanComplete && this._yantadigongComplete && this._baihutangComplete && this._qinglongtangComplete && this._xuanwutangComplete && this._shouhushouComplete && this._qiangdaoComplete && this._shengsijieComplete
+        return this._zhuoguiComplete && this._zhongzuComplete && this._yunbiaoComplete && this._juqingComplete && this._fubenComplete && this._huashanComplete && this._yantadigongComplete && this._baihutangComplete && this._qinglongtangComplete && this._xuanwutangComplete && this._shouhushouComplete && this._qiangdaoComplete && this._shengsijieComplete && this._shenqiComplete
     }
 
     setIsComplete(v) {
@@ -57,6 +59,7 @@ class richangTask extends AbstractTask {
         this._shouhushouComplete = v
         this._qiangdaoComplete = v
         this._shengsijieComplete = v
+        this._shenqiComplete = v
     }
 
     resetCompleteStatus() {
@@ -77,7 +80,7 @@ class richangTask extends AbstractTask {
         swipeVertically(true)
         // 45,195,706,929
         let _r = await getPageText({ x: 0, y: 195, width: 750, height: 735 })
-        for (let i of range(1, 15)) {
+        for (let i of range(1, 20)) {
             if (_r.text.includes(taskName)) {
                 let center = this.findAndClickRect(_r, taskName)
                 if (center.y > 820) {
@@ -138,6 +141,8 @@ class richangTask extends AbstractTask {
                 this._shouhushouComplete = true
             if (taskName == __QIANGDAO__) 
                 this._qiangdaoComplete = true
+            if (taskName == __SHENQI__)
+                this._shenqiComplete = true
             
             return false
         }
@@ -363,8 +368,29 @@ class richangTask extends AbstractTask {
         this._shengsijieComplete = true
     }
 
+    // 神器
+    async shenqi() {
+        let find = await this.taskStart(__SHENQI__)
+        if (!find) {
+            return false
+        }
+        tap(166, 955)
+        sleep(25000)
+        tap(260, 1050)
+        tap(166, 955)
+        sleep(25000)
+        tap(50, 1250)
+        this.toast('神器任务完成')
+        this._shengsijieComplete = true
+    }
+
     async trigger(name) {
         await super.trigger(name)
+
+        if (!this._shenqiComplete) {
+            await this.shenqi()
+            tap(50, 1250)
+        }
 
         if (!this._shengsijieComplete) {
             await this.shengsijie()

@@ -165,10 +165,10 @@ class yaowangTask extends AbstractTask {
 
         if (this.restCountToday > 0) {
             
-            // if (this.restTickets >= 100) {
-            //     // 挑战 200 ~ 300
-            //     this.grades = [190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300]
-            // } else
+            if (this.restTickets >= 900) {
+                // 挑战 200 ~ 300
+                this.grades = [190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300]
+            } else
             if (this.restTickets >= 20) {
                 // 挑战130~190
                 this.grades = [130, 140, 150, 160, 170, 180, 190, 200, 210]

@@ -112,7 +112,10 @@ class zhengdianTask extends AbstractTask {
             this.findAndClickRect(_r, '前往')
             return true
         } else if (_r.text.includes('完成')) {
-            this._feizeiComplete = true
+            if (taskName == __FEIZEI__) 
+                this._feizeiComplete = true
+            if (taskName == __YANBING__)
+                this._yanbingComplete = true
             return this.generateTask()
         }
 
@@ -171,12 +174,20 @@ class zhengdianTask extends AbstractTask {
                     mintue = now.getMinutes()
 
                     tap(535, 450)
-                    sleep(12000)
+                    sleep(10000)
                     r = await getPageText()
                     if (r.text.includes('是的'))
                         this.findAndClickRect(r, '是的')
-
-                    // sleep(40000)
+                    if (r.text.includes('正有此意'))
+                        this.findAndClickRect(r, '正有此意')
+                        sleep(20000)
+                    if (r.text.includes('准备好了'))
+                        this.findAndClickRect(r, '准备好了')
+                        sleep(20000)
+                    if (r.text.includes('做题我拿手')) {
+                        this.findAndClickRect(r, '做题我拿手')
+                        tap(200, 670)
+                    }
                 }
                 this._caihongComplete = true
             }

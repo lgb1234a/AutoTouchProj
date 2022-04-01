@@ -129,14 +129,19 @@ class chenxingTask extends AbstractTask {
         {
             targetGrade = '250级'
             await this.challengeChenxing(250)
-        }
-        else {
+        }else if (chenxingNotify.includes('马'))
+        {
+            targetGrade = '240级'
+            await this.challengeChenxing(240)
+        }else if (chenxingNotify.includes('蛇'))
+        {
             targetGrade = '230级'
             await this.challengeChenxing(230)
         }
-        if (!targetGrade) {
+        else {
             return this.generateTask()
         }
+        
         // 13,197,724,752
         _r = await getPageText({ x: 0, y: 200, width: 750, height: 552 })
         if (_r.text.includes(targetGrade))
@@ -147,10 +152,6 @@ class chenxingTask extends AbstractTask {
         _r = await getPageText()
         if (_r.text && _r.text.includes('挑战辰星'))
         {
-            findAndClickRect(_r, '组队')
-            let r_1 = await getPageText()
-            findAndClickRect(r_1, '创建队伍')
-            tap(675, 910)
             findAndClickRect(_r, '挑战辰星')
             for (let _ of range(1, 150)) {
                 _r = await getPageText()
@@ -163,10 +164,6 @@ class chenxingTask extends AbstractTask {
                     return this.generateTask()
                 }else if(_r.text && _r.text.includes('挑战归属者'))
                 {
-                    findAndClickRect(_r, '组队')
-                    _r = await getPageText()
-                    findAndClickRect(_r, '退出队伍')
-                    tap(670, 1050)
                     tap(700, 880)
                     tap(540, 740)
                 }
