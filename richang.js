@@ -358,16 +358,6 @@ class richangTask extends AbstractTask {
         this._qiangdaoComplete = true
     }
 
-    // 生死劫
-    async shengsijie() {
-        await navigateTo(pageType.zhucheng)
-        tap(600, 520)
-        tap(615, 1140)
-        tap(330, 1040)
-        tap(50, 1250)
-        this._shengsijieComplete = true
-    }
-
     // 神器
     async shenqi() {
         let find = await this.taskStart(__SHENQI__)
@@ -384,16 +374,26 @@ class richangTask extends AbstractTask {
         this._shengsijieComplete = true
     }
 
+    // 生死劫
+    async shengsijie() {
+        await navigateTo(pageType.zhucheng)
+        tap(600, 520)
+        tap(615, 1140)
+        tap(330, 1040)
+        tap(50, 1250)
+        this._shengsijieComplete = true
+    }
+
     async trigger(name) {
         await super.trigger(name)
 
-        if (!this._shenqiComplete) {
-            await this.shenqi()
+        if (!this._shengsijieComplete) {
+            await this.shengsijie()
             tap(50, 1250)
         }
 
-        if (!this._shengsijieComplete) {
-            await this.shengsijie()
+        if (!this._shenqiComplete) {
+            await this.shenqi()
             tap(50, 1250)
         }
         

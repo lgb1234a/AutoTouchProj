@@ -106,7 +106,7 @@ class yaowangTask extends AbstractTask {
 
                 if (gr <= 130) {
                     sleep(3000)
-                }else if (gr < 200) {
+                }else if (gr < 220) {
                     sleep(8000)
                 }else {
                     sleep(25000)
