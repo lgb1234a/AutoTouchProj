@@ -379,7 +379,7 @@ class richangTask extends AbstractTask {
         await navigateTo(pageType.zhucheng)
         tap(600, 520)
         tap(615, 1140)
-        tap(330, 1040)
+        tap(190, 1045)
         tap(50, 1250)
         this._shengsijieComplete = true
     }
