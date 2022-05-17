@@ -99,7 +99,7 @@ class yaowangTask extends AbstractTask {
             const {x, y} = this.getRectCenter(_find.rectangle)
             tap(x, y - 50)
             // 点击妖王再识别
-            let _r = await getPageText({ x: 531, y: 996, width: 200, height: 75 })
+            let _r = await getPageText({ x: 510, y: 995, width: 200, height: 90 })
             
             if (!_r.text.includes('抢夺归属') && !_r.text.includes('未刷新') ) {
                 tap(630, 1036)

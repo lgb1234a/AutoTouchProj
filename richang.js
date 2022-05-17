@@ -381,6 +381,7 @@ class richangTask extends AbstractTask {
         tap(615, 1140)
         tap(190, 1045)
         tap(50, 1250)
+        this.toast('生死劫完成')
         this._shengsijieComplete = true
     }
 
