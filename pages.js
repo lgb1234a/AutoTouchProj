@@ -73,7 +73,7 @@ const pages = [
 	},
     {
         // 妖王
-        'page': '开启镇妖玉设置',
+        'page': '驻守者',
 		'type': pageType.yaowang
     },
     {

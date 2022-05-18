@@ -44,10 +44,10 @@ class yaowangTask extends AbstractTask {
 
     // 滑动到目标妖王
     async swipeToDest(g) {
-        let _r = await getPageText({ x: 0, y: 60, width: 750, height: 780 })
+        let _r = await getPageText({ x: 0, y: 60, width: 750, height: 720 })
         if (!_r.text.includes('封印妖王')) {
             await navigateTo(__PageType__)
-            _r = await getPageText({ x: 0, y: 60, width: 750, height: 780 })
+            _r = await getPageText({ x: 0, y: 60, width: 750, height: 720 })
         }
         const { min, max } = this.getGradeRange(_r.result)
         const r = await new Promise((resolve, reject)=> {
